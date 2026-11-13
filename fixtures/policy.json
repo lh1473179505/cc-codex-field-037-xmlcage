@@ -1,0 +1,6 @@
+{
+  "max_entity_depth": 4,
+  "max_expansions": 32,
+  "max_expansion_bytes": 4096,
+  "max_text_bytes": 2048
+}
