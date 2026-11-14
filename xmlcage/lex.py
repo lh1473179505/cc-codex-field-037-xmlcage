@@ -95,9 +95,10 @@ def lex(src: str) -> list[Event]:
             # start tag
             name, j = _read_name(src, i + 1)
             attrs: list[tuple[str, str]] = []
-            while j < n and src[j].isspace():
-                j += 1
-                if j < n and src[j] in "/>":
+            while j < n:
+                while j < n and src[j].isspace():
+                    j += 1
+                if j >= n or src[j] in "/>":
                     break
                 if j < n and (src[j].isalpha() or src[j] in "_:"):
                     an, j = _read_name(src, j)
@@ -116,8 +117,8 @@ def lex(src: str) -> list[Event]:
                         raise LexError("unclosed_attr")
                     attrs.append((an, src[j + 1:k]))
                     j = k + 1
-                    while j < n and src[j].isspace():
-                        j += 1
+                else:
+                    raise LexError("bad_start_tag")
             empty = False
             if j < n and src[j] == "/":
                 empty = True
